@@ -1,0 +1,92 @@
+﻿@model PaginatedList<AdventureWorks.ViewModels.ProductCategoryVM>
+
+@{
+    ViewData["Title"] = "ProductCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Product Category</h1>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <div class="form-group" style="display: inline-block">
+                <span>Search on Product Name, Colour or Category:</span>
+                <input type="text" name="SearchString"
+                       value="@ViewData["currentFilter"]" required />
+            </div>
+            <div class="form-group" style="display: inline-block">
+                <input type="submit" value="Search"
+                       class="btn btn-primary" />
+            </div>
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Product Name", "ProductCategory", new { sortOrder = ViewBag.IDSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Category Name", "ProductCategory", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Product Number", "ProductCategory", new { sortOrder = ViewBag.NumSortParm })
+            </th>
+            <th>
+                Color
+            </th>
+            <th>
+                Standard Cost
+            </th>
+            <th>
+                List Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+               
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link"
+               href="@Url.Action("Index", new { pageNumber = Model.PageIndex - 1 })">
+                Previous
+            </a>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link"
+               href="@Url.Action("Index", new { pageNumber = Model.PageIndex + 1 })">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>
+
